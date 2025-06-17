@@ -23,7 +23,7 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	if (check_range(146, 186, hwrev_adc)) {
 		env_set("hwrev", "rg351mp");
 
-		run_command("printenv ; if load mmc 1:1 "0x02000000" ScreenFiles/panelchooser.cmd ; then ; source "0x02000000" ; fi ; printenv", 0);
+		run_command("printenv ; if load mmc 1:1 \"0x02000000\" ScreenFiles/panelchooser.cmd ; then ; source \"0x02000000\" ; fi ; printenv", 0);
 		
 		run_command("setenv -f dtb_name \"${PanelPathSlash}rg351mp-kernel.dtb\"", 0);
 		
