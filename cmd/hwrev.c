@@ -24,8 +24,8 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		env_set("hwrev", "rg351mp");
 		/*run_command("setenv -f dtb_name \'\$\{PanelPathSlash\}rg351mp-kernel.dtb\'", 0);
 		run_command("setenv -f PanChoEnabled yes", 0); */
-		env_set("PanChoEnabled", 'yes'); 
-		env_set("dtb_name", '${PanelPathSlash}rg351mp-kernel.dtb'); 
+		env_set("PanChoEnabled", "yes"); 
+		env_set("dtb_name", "${PanelPathSlash}rg351mp-kernel.dtb"); 
 	}
 	/* RG351V */
 	else if (check_range(494, 534, hwrev_adc)) {
