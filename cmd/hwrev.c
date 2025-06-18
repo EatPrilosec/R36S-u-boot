@@ -48,7 +48,6 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 #endif
 	printf("adc0 (hw rev) %d\n", hwrev_adc);
 	printf("Model = %s\n",env_get("hwrev"));
-	printf("Moded = %s\n",env_get("hwrev"));
 	return CMD_RET_SUCCESS;
 }
 
