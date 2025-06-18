@@ -23,11 +23,8 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	if (check_range(146, 186, hwrev_adc)) {
 		env_set("hwrev", "rg351mp");
 
-		run_command("printenv ; if load mmc 1:1 0x02000000 PanCho.env ; then ; env import -t 0x02000000 ${filesize} ; fi ; printenv", 0);
-		
+		run_command("setenv -f PanchoEnvLoaded true ; if load mmc 1:1 0x02000000 PanCho.env ; then ; env import -t 0x02000000 ${filesize} ; setenv -f PanchoEnvLoaded true ; fi", 0);
 		run_command("setenv -f dtb_name \"${PanelPathSlash}rg351mp-kernel.dtb\"", 0);
-		
-		run_command("setenv -f PanChoEnabled yes", 0); 
 
 	}
 	/* RG351V */
