@@ -23,6 +23,7 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	if (check_range(146, 186, hwrev_adc)) {
 		env_set("hwrev", "rg351mp");
 		run_command("setenv -f PanchoEnvLoaded false ; if load mmc 1:1 0x02000000 PanCho.env ; then ; if env import -t 0x02000000 ${filesize} ; then ; setenv -f PanchoEnvLoaded true ; fi ; fi", 0);
+		run_command("if ${PanchoEnvLoaded}; then; echo Pancho.env Loaded; else; if load mmc 1:1 0x02000000 rg351mp-kernel.dtb; then; echo \"found rg351mp-kernel.dtb, business as usual\"; else; if load mmc 1:1 0x02000000 \"ScreenFiles/Panel 4/rg351mp-kernel.dtb\"; then; echo \"found ScreenFiles, lets temporarily load default (pan 4) so PanCho can init\"; setenv PanelPathSlash \"ScreenFiles/Panel 4/\"; else; echo \"cant find r36s dtb anywhere expected, boot will fail so lets fail early and sleep for a while to avoid lots of looping\"; sleep 60; reset; fi; fi; fi", 0);
 		run_command("setenv -f dtb_name \"${PanelPathSlash}rg351mp-kernel.dtb\"", 0);
 
 	}
