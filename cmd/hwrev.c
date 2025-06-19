@@ -32,7 +32,7 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		run_command("if env exists hwrev; then; echo \"skip PanCho init prep\"; else; if ${PanChoEnvLoaded}; then; echo PanChoEnv Loaded; else; if load mmc 1:1 0x02000000 rg351mp-kernel.dtb; then; echo \"found rg351mp-kernel.dtb, business as usual\"; else; echo \"rg351mp-kernel.dtb not found, uninitialized PanCho?\"; if load mmc 1:1 0x02000000 \"ScreenFiles/Panel 4/rg351mp-kernel.dtb\"; then; echo \"found ScreenFiles, lets temporarily load default (pan 4) so PanCho can init\"; setenv PanelPathSlash \"ScreenFiles/Panel 4/\"; else; echo \"cant find r36s dtb anywhere expected, boot will fail so lets fail early and sleep for a while to avoid lots of looping\"; sleep 60; reset; fi; fi; fi; fi", 0);
 
 		env_set("hwrev", "rg351mp");
-		run_command("setenv -f dtb_name \"${PanelPathSlash}rg351mp-kernel.dtb\"", 0);
+		run_command("if load mmc 1:1 0x2000000 PanCho.ini; then; setenv -f dtb_name \"${PanelPathSlash}rg351mp-kernel.dtb\"; else; setenv -f dtb_name rg351mp-kernel.dtb; fi", 0);
 
 		
 	}
