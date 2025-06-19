@@ -398,7 +398,7 @@ int init_kernel_dtb(void)
 		if (ret != CMD_RET_SUCCESS) {
 			printf("dtb in spi flash fail, try dtb in fat\n");
 			run_command("echo b4; printenv; mmc dev 1; printenv; echo after", 0);
-			ret = run_command("fatload mmc 1:1 ${fdt_addr_r} ${dtb_name}", 0);
+			ret = run_command("fatload mmc 1:1 ${fdt_addr_r} \"${dtb_name}\"", 0);
 			if (ret != CMD_RET_SUCCESS) {
 				printf("%s dtb in fat fs fail\n", __func__);
 				odroid_drop_errorlog("dtb load fail", 13);
