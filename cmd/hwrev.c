@@ -22,7 +22,7 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	/* RG351MP */
 	if (check_range(146, 186, hwrev_adc)) {
 		env_set("hwrev", "rg351mp");
-		run_command("setenv -f PanChoEnvSize 0x1000; setenv -f PanChoEnvLoc 28560", 0);
+		run_command("setenv -f PanChoEnvSize 0x1000; setenv -f PanChoEnvLoc 28560", 0); /* seems clear on uboot.bin mbr and gpt */
 		run_command("setenv -f WipePanChoEnv \"mmc erase ${PanChoEnvLoc} ${PanChoEnvSize}\";", 0); 
 		run_command("setenv -f LoadPanChoEnv \"mmc read 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize};env import -b 0x2000000 ${PanChoEnvSize}\";", 0); 
 		run_command("setenv -f SavePanChoEnv \"env export -b -s ${PanChoEnvSize} 0x2000000; mmc write 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize}\"", 0); 
