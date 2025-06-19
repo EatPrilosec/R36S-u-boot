@@ -21,14 +21,15 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 #if 1
 	/* RG351MP */
 	if (check_range(146, 186, hwrev_adc)) {
-		env_set("devnum", "1");
+		/* env_set("devnum", "1"); */
 		run_command("setenv -f PanChoEnvSize 0x1000; setenv -f PanChoEnvLoc 28560", 0); /*seems clear on uboot.bin mbr and gpt*/
-		run_command("setenv -f WipePanChoEnv \"setenv devnum 1; mmc dev 1; mmc erase ${PanChoEnvLoc} ${PanChoEnvSize}\";", 0); 
-		run_command("setenv -f LoadPanChoEnv \"setenv devnum 1; mmc dev 1; mmc read 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize};env import -b 0x2000000 ${PanChoEnvSize}\";", 0); 
-		run_command("setenv -f SavePanChoEnv \"env export -b -s ${PanChoEnvSize} 0x2000000; setenv devnum 1; mmc dev 1; mmc write 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize}\"", 0); 
-		run_command("if env exists hwrev; then; echo \"skip mmc init\"; else; setenv devnum 1; echo \"pancho init\"; echo \"rescan mmc...\"; mmc rescan; mmc dev 1; echo \"list mmc...\"; mmc list; echo \"info mmc...\"; mmc info; echo \"###### before load ######\" ;printenv PanChoEnvSize WipePanChoEnv LoadPanChoEnv SavePanChoEnv PanChoEnvLoaded; setenv -f PanChoEnvLoaded false; run LoadPanChoEnv; echo \"###### after load ######\"; printenv PanChoEnvSize WipePanChoEnv LoadPanChoEnv SavePanChoEnv PanChoEnvLoaded; fi", 0);
+		run_command("setenv -f WipePanChoEnv \" mmc dev 1; mmc erase ${PanChoEnvLoc} ${PanChoEnvSize}\";", 0); 
+		run_command("setenv -f LoadPanChoEnv \" mmc dev 1; mmc read 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize};env import -b 0x2000000 ${PanChoEnvSize}\";", 0); 
+		run_command("setenv -f SavePanChoEnv \"env export -b -s ${PanChoEnvSize} 0x2000000; mmc dev 1; mmc write 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize}\"", 0); 
+		/* echo \"rescan mmc...\"; mmc rescan; mmc dev 1; echo \"list mmc...\"; mmc list; echo \"info mmc...\"; mmc info; */
+		run_command("if env exists hwrev; then; echo \"skip PanChoEnv Load\"; else; echo \"start PanChoEnv Load\"; echo \"###### before load ######\" ;printenv PanChoEnvSize WipePanChoEnv LoadPanChoEnv SavePanChoEnv PanChoEnvLoaded; setenv -f PanChoEnvLoaded false; run LoadPanChoEnv; echo \"###### after load ######\"; printenv PanChoEnvSize WipePanChoEnv LoadPanChoEnv SavePanChoEnv PanChoEnvLoaded; fi", 0); 
 
-		run_command("if env exists hwrev; then; echo \"skip PanChoEnv Load\"; else; if ${PanChoEnvLoaded}; then; echo PanChoEnv Loaded; else; if load mmc 1:1 0x02000000 rg351mp-kernel.dtb; then; echo \"found rg351mp-kernel.dtb, business as usual\"; else; echo \"rg351mp-kernel.dtb not found, uninitialized PanCho?\"; if load mmc 1:1 0x02000000 \"ScreenFiles/Panel 4/rg351mp-kernel.dtb\"; then; echo \"found ScreenFiles, lets temporarily load default (pan 4) so PanCho can init\"; setenv PanelPathSlash \"ScreenFiles/Panel 4/\"; else; echo \"cant find r36s dtb anywhere expected, boot will fail so lets fail early and sleep for a while to avoid lots of looping\"; sleep 60; reset; fi; fi; fi; fi", 0);
+		run_command("if env exists hwrev; then; echo \"skip PanCho init prep\"; else; if ${PanChoEnvLoaded}; then; echo PanChoEnv Loaded; else; if load mmc 1:1 0x02000000 rg351mp-kernel.dtb; then; echo \"found rg351mp-kernel.dtb, business as usual\"; else; echo \"rg351mp-kernel.dtb not found, uninitialized PanCho?\"; if load mmc 1:1 0x02000000 \"ScreenFiles/Panel 4/rg351mp-kernel.dtb\"; then; echo \"found ScreenFiles, lets temporarily load default (pan 4) so PanCho can init\"; setenv PanelPathSlash \"ScreenFiles/Panel 4/\"; else; echo \"cant find r36s dtb anywhere expected, boot will fail so lets fail early and sleep for a while to avoid lots of looping\"; sleep 60; reset; fi; fi; fi; fi", 0);
 
 		env_set("hwrev", "rg351mp");
 		run_command("setenv -f dtb_name \"${PanelPathSlash}rg351mp-kernel.dtb\"", 0);
