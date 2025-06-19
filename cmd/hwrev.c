@@ -22,7 +22,7 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	/* RG351MP */
 	if (check_range(146, 186, hwrev_adc)) {
 		env_set("hwrev", "rg351mp");
-		run_command("mmc rescan", 0);
+		run_command("mmc rescan; mmc list; mmc info", 0);
 		run_command("mmc dev 1", 0);
 		run_command("setenv -f dtb_name \"${PanelPathSlash}rg351mp-kernel.dtb\"", 0);
 		run_command("printenv; sleep 20", 0);
