@@ -26,8 +26,9 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		run_command("setenv -f WipePanChoEnv \"mmc erase ${PanChoEnvLoc} ${PanChoEnvSize}\";", 0); 
 		run_command("setenv -f LoadPanChoEnv \"mmc read 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize};env import -b 0x2000000 ${PanChoEnvSize}\";", 0); 
 		run_command("setenv -f SavePanChoEnv \"env export -b -s ${PanChoEnvSize} 0x2000000; mmc write 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize}\"", 0); 
+		run_command("echo \"###### before load ######\" ;printenv PanChoEnvSize WipePanChoEnv LoadPanChoEnv SavePanChoEnv PanChoEnvLoaded", 0); 
 		
-		run_command("setenv -f PanChoEnvLoaded false; run LoadPanChoEnv", 0);
+		run_command("setenv -f PanChoEnvLoaded false; run LoadPanChoEnv; echo \"###### after load ######\"; printenv PanChoEnvSize WipePanChoEnv LoadPanChoEnv SavePanChoEnv PanChoEnvLoaded", 0);
 		
 		run_command("if ${PanChoEnvLoaded}; then; echo PanChoEnv Loaded; else; if load mmc 1:1 0x02000000 rg351mp-kernel.dtb; then; echo \"found rg351mp-kernel.dtb, business as usual\"; else; echo \"rg351mp-kernel.dtb not, uninitialized PanCho?\"; if load mmc 1:1 0x02000000 \"ScreenFiles/Panel 4/rg351mp-kernel.dtb\"; then; echo \"found ScreenFiles, lets temporarily load default (pan 4) so PanCho can init\"; setenv PanelPathSlash \"ScreenFiles/Panel 4/\"; else; echo \"cant find r36s dtb anywhere expected, boot will fail so lets fail early and sleep for a while to avoid lots of looping\"; sleep 60; reset; fi; fi; fi", 0);
 		
