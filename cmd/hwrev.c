@@ -27,7 +27,7 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 
 		run_command("setenv -f WipePanChoEnv \"mmc erase ${PanChoEnvLoc} ${PanChoEnvSize}; env delete -f var ${PanChoVarList}\";", 0); 
 		run_command("setenv -f LoadPanChoEnv \"mmc read 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize};env import -b 0x2000000 ${PanChoEnvSize}\";", 0); 
-		run_command("setenv -f SavePanChoEnv \"env export -b -s ${PanChoEnvSize} 0x2000000 \"${PanChoVarList}\"; mmc write 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize}\"", 0); 
+		run_command("setenv -f SavePanChoEnv \"env export -b -s ${PanChoEnvSize} 0x2000000 \\\"${PanChoVarList}\\\"; mmc write 0x2000000 ${PanChoEnvLoc} ${PanChoEnvSize}\"", 0); 
 		
 		run_command("setenv -f PanChoEnvLoaded false; run LoadPanChoEnv", 0);
 		
