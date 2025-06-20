@@ -175,7 +175,7 @@ int board_late_init(void)
 #endif
 #ifdef CONFIG_DRM_ROCKCHIP
 	rockchip_show_logo();
-#endif 
+#endif
 	soc_clk_dump();
 
 	return rk_board_late_init();
@@ -397,9 +397,7 @@ int init_kernel_dtb(void)
 
 		if (ret != CMD_RET_SUCCESS) {
 			printf("dtb in spi flash fail, try dtb in fat\n");
-			run_command("if load mmc 1:1 0x2000000  logo.env; then; env import -t 0x2000000  ${filesize}; load mmc 1:1 ${fdt_addr_r} \"${LogoDTBPathSlash}\"; else; load mmc 1:1 ${fdt_addr_r} ${dtbfile}; fi", 0);
-
-			ret = run_command("true", 0);
+			ret = run_command("fatload mmc 1:1 ${fdt_addr_r} ${dtb_name}", 0);
 			if (ret != CMD_RET_SUCCESS) {
 				printf("%s dtb in fat fs fail\n", __func__);
 				odroid_drop_errorlog("dtb load fail", 13);
