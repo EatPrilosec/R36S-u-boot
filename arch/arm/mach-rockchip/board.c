@@ -397,7 +397,7 @@ int init_kernel_dtb(void)
 
 		if (ret != CMD_RET_SUCCESS) {
 			printf("dtb in spi flash fail, try dtb in fat\n");
-			run_command("echo \"setenv dtbfound false\"; setenv dtbfound false; echo \"for dtbfile in...\"; for dtbfile in rg351mp-kernel.dtb rg351mp-uboot.dtb r3xs-uboot.dtb R3XS-uboot.dtb r36s-uboot.dtb R36S-uboot.dtb; do; echo \"...${dtbfile}\"; if test ${dtbfound} = true; then; echo \"already found dtb\"; elif fatload mmc 1:1 ${fdt_addr_r} \"${dtbfile}\"; then; echo \"found dtb on root\"; setenv dtbfound true; elif fatload mmc 1:1 ${fdt_addr_r} \"ScreenFiles/${dtbfile}\"; then; echo \"found dtb in ScreenFiles\"; setenv dtbfound true; elif fatload mmc 1:1 ${fdt_addr_r} \"ScreenFiles/Panel 0/${dtbfile}\"; then; echo \"found dtb in ScreenFiles/Panel 0\"; setenv dtbfound true; fi; done", 0);
+			run_command("echo \"setenv dtbfound false\"; setenv dtbfound false; echo \"for dtbfile in...\"; for dtbfile in \"rg351mp-kernel.dtb rg351mp-uboot.dtb r3xs-uboot.dtb R3XS-uboot.dtb r36s-uboot.dtb R36S-uboot.dtb\"; do; echo \"...${dtbfile}\"; if test ${dtbfound} = true; then; echo \"already found dtb\"; elif fatload mmc 1:1 ${fdt_addr_r} \"${dtbfile}\"; then; echo \"found dtb on root\"; setenv dtbfound true; elif fatload mmc 1:1 ${fdt_addr_r} \"ScreenFiles/${dtbfile}\"; then; echo \"found dtb in ScreenFiles\"; setenv dtbfound true; elif fatload mmc 1:1 ${fdt_addr_r} \"ScreenFiles/Panel 0/${dtbfile}\"; then; echo \"found dtb in ScreenFiles/Panel 0\"; setenv dtbfound true; fi; done", 0);
 
 			ret = run_command("true", 0);
 			if (ret != CMD_RET_SUCCESS) {
