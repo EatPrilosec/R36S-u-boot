@@ -397,9 +397,7 @@ int init_kernel_dtb(void)
 
 		if (ret != CMD_RET_SUCCESS) {
 			printf("dtb in spi flash fail, try dtb in fat\n");
-			run_command("setenv dtbfound false; for dtbfile in rg351mp-kernel.dtb rg351mp-uboot.dtb r3xs-uboot.dtb R3XS-uboot.dtb r36s-uboot.dtb R36S-uboot.dtb; do; if ${dtbfound}; then; echo \"already found dtb\"; elif load mmc 1:1 ${fdt_addr_r} \"${dtbfile}\"; then; echo \"found dtb on root\"; setenv dtbfound true; elif load mmc 1:1 ${fdt_addr_r} \"ScreenFiles/${dtbfile}\"; then; echo \"found dtb in ScreenFiles\"; setenv dtbfound true; elif load mmc 1:1 ${fdt_addr_r} \"ScreenFiles/Panel 0/${dtbfile}\"; then; echo \"found dtb in ScreenFiles/Panel 0\"; setenv dtbfound true; fi; done", 0);
-			
-			ret = CMD_RET_SUCCESS;
+			ret = run_command("setenv dtbfound false; for dtbfile in rg351mp-kernel.dtb rg351mp-uboot.dtb r3xs-uboot.dtb R3XS-uboot.dtb r36s-uboot.dtb R36S-uboot.dtb; do; if ${dtbfound}; then; echo \"already found dtb\"; elif load mmc 1:1 ${fdt_addr_r} \"${dtbfile}\"; then; echo \"found dtb on root\"; setenv dtbfound true; elif load mmc 1:1 ${fdt_addr_r} \"ScreenFiles/${dtbfile}\"; then; echo \"found dtb in ScreenFiles\"; setenv dtbfound true; elif load mmc 1:1 ${fdt_addr_r} \"ScreenFiles/Panel 0/${dtbfile}\"; then; echo \"found dtb in ScreenFiles/Panel 0\"; setenv dtbfound true; fi; done; true", 0);
 			if (ret != CMD_RET_SUCCESS) {
 				printf("%s dtb in fat fs fail\n", __func__);
 				odroid_drop_errorlog("dtb load fail", 13);
