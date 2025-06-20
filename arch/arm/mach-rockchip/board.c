@@ -175,7 +175,7 @@ int board_late_init(void)
 #endif
 #ifdef CONFIG_DRM_ROCKCHIP
 	rockchip_show_logo();
-#endif
+#endif 
 	soc_clk_dump();
 
 	return rk_board_late_init();
@@ -397,20 +397,31 @@ int init_kernel_dtb(void)
 
 		if (ret != CMD_RET_SUCCESS) {
 			printf("dtb in spi flash fail, try dtb in fat\n");
-			/* ret = run_command("fatload mmc 1:1 ${fdt_addr_r} \"${dtb_name}\"", 0); */
+			/* just find a temp dtb somewhere */
+			setenv dtbfound false
+			for dtbfile in rg351mp-kernel.dtb rg351mp-uboot.dtb r3xs-uboot.dtb r36s-uboot.dtb
+			do
+				if load mmc 1:1 ${fdt_addr_r} \"${dtbfile}\"
+				then
+					echo \"found dtb on root\"
+				elif load mmc 1:1 ${fdt_addr_r} \"ScreenFiles/${dtbfile}\"
+				then
+					echo \"found dtb in ScreenFiles\"
+				elif load mmc 1:1 ${fdt_addr_r} \"ScreenFiles/Panel 0/${dtbfile}\"
+				then
+					echo \"found dtb in ScreenFiles/Panel 0\"
+				fi
+			done
+			
 			ret = run_command("load mmc 1:1 ${fdt_addr_r} \"${dtb_name}\"", 0);
-			if (ret != CMD_RET_SUCCESS) {
+
+			
+			if (CMD_RET_SUCCESS != check_fdt_header(fdt_addr)) {
 				printf("%s dtb in fat fs fail\n", __func__);
 				odroid_drop_errorlog("dtb load fail", 13);
 				odroid_alert_leds();
 				return 0;
-			} else {
-				if (CMD_RET_SUCCESS != check_fdt_header(fdt_addr)) {
-					printf("%s dtb in fat fs fail\n", __func__);
-					odroid_drop_errorlog("dtb load fail", 13);
-					odroid_alert_leds();
-					return 0;
-				}
+			}
 			}
 		}
 #else
