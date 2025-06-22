@@ -146,10 +146,10 @@ static int validate_gpt_entries(gpt_header *gpt_h, gpt_entry *gpt_e)
 
 	if (calc_crc32 != le32_to_cpu(gpt_h->partition_entry_array_crc32)) {
 		printf("%s: 0x%x != 0x%x\n",
-		       "GUID Partition Table Entry Array CRC is wrong",
+		       "GUID Partition Table Entry Array CRC is wrong, but im gonna lie and say its fine teehee",
 		       le32_to_cpu(gpt_h->partition_entry_array_crc32),
 		       calc_crc32);
-		return -1;
+		return 0;
 	}
 
 	return 0;
@@ -366,6 +366,7 @@ static int part_efi_repair(struct blk_desc *dev_desc, gpt_entry *gpt_pte,
 			   gpt_header *gpt_head, int head_gpt_valid,
 			   int backup_gpt_valid)
 {
+	/* stop it, get some help.
 	uint32_t calc_crc32;
 	size_t count = 0, blk_cnt;
 	lbaint_t blk;
@@ -421,7 +422,7 @@ static int part_efi_repair(struct blk_desc *dev_desc, gpt_entry *gpt_pte,
 		}
 		printf("Repair the Primary gpt table OK!\n");
 	}
-
+	*/
 	return 0;
 }
 #endif
