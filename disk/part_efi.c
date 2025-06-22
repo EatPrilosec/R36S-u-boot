@@ -366,7 +366,7 @@ static int part_efi_repair(struct blk_desc *dev_desc, gpt_entry *gpt_pte,
 			   gpt_header *gpt_head, int head_gpt_valid,
 			   int backup_gpt_valid)
 {
-	/* stop it, get some help.
+	
 	uint32_t calc_crc32;
 	size_t count = 0, blk_cnt;
 	lbaint_t blk;
@@ -422,7 +422,7 @@ static int part_efi_repair(struct blk_desc *dev_desc, gpt_entry *gpt_pte,
 		}
 		printf("Repair the Primary gpt table OK!\n");
 	}
-	*/
+
 	return 0;
 }
 #endif
