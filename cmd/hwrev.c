@@ -22,7 +22,7 @@ int do_hwrev(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	/* RG351MP */
 	if (check_range(146, 186, hwrev_adc)) {
 		env_set("hwrev", "rg351mp");
-		run_command("if load mmc 1:1 0x2000000 logo.env; then; env import -t 0x2000000 ${filesize}; fi; setenv dtb_name \"${PanelPathSlash}rg351mp-kernel.dtb\"", 0);
+		run_command("mw.b 0x2000000 0 0x10000; if load mmc 1:1 0x2000000 logo.env; then; env import -t 0x2000000 ${filesize}; fi; setenv dtb_name \"${PanelPathSlash}rg351mp-kernel.dtb\"", 0);
 		/*env_set("dtb_name", "${PanelPathSlash}rg351mp-kernel.dtb");*/
 	}
 	/* RG351V */
