@@ -154,8 +154,7 @@ int odroid_display_status(int logo_mode, int logo_storage, const char *str)
 				logo_bmp_names[logo_mode]);
 
 		// run_command(cmd, 0);
-		run_command("mw.b 0x3df2c000 0 0x1000; echo \"Loading logo\"; if load mmc 1:1 0x3df2c000 \"${PanelPathSlash}logo.bmp\"; then; echo \"Showing logo\"; show_bmp 0x3df2c000; else; echo \"logo load fail\"; true; fi", 0);
-
+		run_command("mw.b 0x2000000 0 0x10000; if load mmc 1:1 0x2000000 logo.env; then; env import -t 0x2000000 ${filesize}; fi; mw.b 0x3df2c000 0 0x1000; echo \"Loading logo\"; if load mmc 1:1 0x3df2c000 \"${LogoPathSlash}logo.bmp\"; then; echo \"Showing logo\"; show_bmp 0x3df2c000; else; echo \"logo load fail\"; true; fi", 0);
 		// if (show_bmp(bmp_mem))
 		// 	printf("[%s] show_bmp Fail!\n", __func__);
 		break;
@@ -180,7 +179,7 @@ int odroid_display_status(int logo_mode, int logo_storage, const char *str)
 					logo_bmp_names[logo_mode]);
 
 			// run_command(cmd, 0);
-			run_command("mw.b 0x3df2c000 0 0x1000; echo \"Loading logo\"; if load mmc 1:1 0x3df2c000 \"${PanelPathSlash}logo.bmp\"; then; echo \"Showing logo\"; show_bmp 0x3df2c000; else; echo \"logo load fail\"; true; fi", 0);
+			run_command("mw.b 0x2000000 0 0x10000; if load mmc 1:1 0x2000000 logo.env; then; env import -t 0x2000000 ${filesize}; fi; mw.b 0x3df2c000 0 0x1000; echo \"Loading logo\"; if load mmc 1:1 0x3df2c000 \"${LogoPathSlash}logo.bmp\"; then; echo \"Showing logo\"; show_bmp 0x3df2c000; else; echo \"logo load fail\"; true; fi", 0);
 
 			// if (show_bmp(bmp_mem))
 			// 	printf("[%s] show_bmp Fail!\n", __func__);
